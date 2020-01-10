@@ -33,12 +33,13 @@ public class CartController {
 	private ItemRepository itemRepository;
 	
 	@PostMapping("/addToCart")
-	public ResponseEntity<Cart> addTocart(@RequestBody ModifyCartRequest request) {
+	public ResponseEntity<Cart> addToCart(@RequestBody ModifyCartRequest request) {
 		AppUser user = userRepository.findByUsername(request.getUsername());
 		if(user == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		Optional<Item> item = itemRepository.findById(request.getItemId());
+
 		if(!item.isPresent()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -52,11 +53,13 @@ public class CartController {
 	@PostMapping("/removeFromCart")
 	public ResponseEntity<Cart> removeFromcart(@RequestBody ModifyCartRequest request) {
 		AppUser user = userRepository.findByUsername(request.getUsername());
+
 		if(user == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		Optional<Item> item = itemRepository.findById(request.getItemId());
 		if(!item.isPresent()) {
+			System.err.println(item);
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		Cart cart = user.getCart();
